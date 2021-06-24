@@ -1,0 +1,20 @@
+// DRAWING CIRCLE
+
+float x,y;
+            float cnt = 140;
+            float l = 0.5;
+            float a = M_PI * 2 / cnt;
+
+            glBegin(GL_TRIANGLE_FAN);
+
+                glColor3f(1.0f, 1.0f, 1.0f);   glVertex2f(0,0);
+
+                for (int i=-1; i<cnt; i++)
+                {
+                    x = sin(a*i) * l;
+                    y = cos(a*i) * l;
+                    glColor3f(i/140, i/140, i/140);
+                    glVertex2f(x,y);
+                }
+
+            glEnd();

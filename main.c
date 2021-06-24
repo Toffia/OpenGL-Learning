@@ -6,6 +6,35 @@ LRESULT CALLBACK WindowProc(HWND, UINT, WPARAM, LPARAM);
 void EnableOpenGL(HWND hwnd, HDC*, HGLRC*);
 void DisableOpenGL(HWND, HDC, HGLRC);
 
+void ShowObj()
+{
+    glBegin(GL_TRIANGLES);
+
+    glColor3f(0,0,0);
+    glVertex2f(0,0);
+    glColor3f(1,0,0);
+    glVertex2f(0.5,0);
+    glColor3f(0,1,0);
+    glVertex2f(0,0.5);
+
+    glEnd();
+}
+
+void drawCircle()
+{
+    float step = 80;
+    float radius = 0.6;
+
+
+    glBegin(GL_TRIANGLE_FAN);
+
+    for (float f=-M_PI; f<M_PI; f+=10/step)
+    {
+        glVertex2f(cos(f)*radius,sin(f)*radius-radius*2);
+    }
+
+    glEnd();
+}
 
 int WINAPI WinMain(HINSTANCE hInstance,
                    HINSTANCE hPrevInstance,
@@ -77,40 +106,16 @@ int WINAPI WinMain(HINSTANCE hInstance,
         else
         {
             /* OpenGL animation code goes here */
-
-            //glEnable(GL_LINE_STIPPLE);
-            glLineStipple(1,0x00ff);
-
-            glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+            glClearColor(0.4f, 0.3f, 0.4f, 0.0f);
             glClear(GL_COLOR_BUFFER_BIT);
 
-            glPushMatrix();
-            glRotatef(theta, 0,0,1.0f);
+            glTranslatef(cos(theta)*0.01f,sin(theta)*0.01f,0);
 
-            float x,y;
-            float cnt = 140;
-            float l = 0.5;
-            float a = M_PI * 2 / cnt;
-
-            glBegin(GL_TRIANGLE_FAN);
-
-                glColor3f(1.0f, 1.0f, 1.0f);   glVertex2f(0,0);
-
-                for (int i=-1; i<cnt; i++)
-                {
-                    x = sin(a*i) * l;
-                    y = cos(a*i) * l;
-                    glColor3f(i/140, i/140, i/140);
-                    glVertex2f(x,y);
-                }
-
-            glEnd();
-
-            glPopMatrix();
+            drawCircle();
 
             SwapBuffers(hDC);
 
-            theta += 1.0f;
+            theta += 0.01f;
             Sleep (1);
         }
     }
