@@ -1,5 +1,6 @@
 #include <windows.h>
 #include <gl/gl.h>
+#include <math.h>
 
 LRESULT CALLBACK WindowProc(HWND, UINT, WPARAM, LPARAM);
 void EnableOpenGL(HWND hwnd, HDC*, HGLRC*);
@@ -44,8 +45,8 @@ int WINAPI WinMain(HINSTANCE hInstance,
                           WS_OVERLAPPEDWINDOW,
                           CW_USEDEFAULT,
                           CW_USEDEFAULT,
-                          256,
-                          256,
+                          700,
+                          700,
                           NULL,
                           NULL,
                           hInstance,
@@ -77,17 +78,31 @@ int WINAPI WinMain(HINSTANCE hInstance,
         {
             /* OpenGL animation code goes here */
 
+            //glEnable(GL_LINE_STIPPLE);
+            glLineStipple(1,0x00ff);
+
             glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
             glClear(GL_COLOR_BUFFER_BIT);
 
             glPushMatrix();
-            glRotatef(theta, 1.0f, 1.0f, 1.0f);
+            glRotatef(theta, 0,0,1.0f);
 
-            glBegin(GL_TRIANGLES);
+            float x,y;
+            float cnt = 140;
+            float l = 0.5;
+            float a = M_PI * 2 / cnt;
 
-                glColor3f(1.0f, 0.0f, 0.0f);   glVertex2f(0.0f,   1.0f);
-                glColor3f(0.0f, 1.0f, 0.0f);   glVertex2f(0.87f,  -0.5f);
-                glColor3f(0.0f, 0.0f, 1.0f);   glVertex2f(-0.87f, -0.5f);
+            glBegin(GL_TRIANGLE_FAN);
+
+                glColor3f(1.0f, 1.0f, 1.0f);   glVertex2f(0,0);
+
+                for (int i=-1; i<cnt; i++)
+                {
+                    x = sin(a*i) * l;
+                    y = cos(a*i) * l;
+                    glColor3f(i/140, i/140, i/140);
+                    glVertex2f(x,y);
+                }
 
             glEnd();
 
